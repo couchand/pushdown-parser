@@ -18,15 +18,26 @@ global class Tokenizer
         stringToTokenize = '';
 
         Integer lParenIndex = token.indexOf('(');
+        Integer rParenIndex = token.indexOf(')');
         if ( 0 == lParenIndex )
         {
             stringToTokenize = token.substring(1);
             token = '(';
         }
+        else if ( 0 == rParenIndex )
+        {
+            stringToTokenize = token.substring(1);
+            token = ')';
+        }
         else if ( -1 != lParenIndex )
         {
             stringToTokenize = token.substring( lParenIndex );
             token = token.substring( 0, lParenIndex );
+        }
+        else if ( -1 != rParenIndex )
+        {
+            stringToTokenize = token.substring( rParenIndex );
+            token = token.substring( 0, rParenIndex );
         }
 
         return token;
