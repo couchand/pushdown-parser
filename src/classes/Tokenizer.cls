@@ -19,6 +19,8 @@ global class Tokenizer
 
         Integer lParenIndex = token.indexOf('(');
         Integer rParenIndex = token.indexOf(')');
+        Integer commaIndex = token.indexOf(',');
+
         if ( 0 == lParenIndex )
         {
             stringToTokenize = token.substring(1);
@@ -29,10 +31,20 @@ global class Tokenizer
             stringToTokenize = token.substring(1);
             token = ')';
         }
+        else if ( 0 == commaIndex )
+        {
+            stringToTokenize = token.substring(1);
+            token = ',';
+        }
         else if ( -1 != lParenIndex )
         {
             stringToTokenize = token.substring( lParenIndex );
             token = token.substring( 0, lParenIndex );
+        }
+        else if ( -1 != commaIndex )
+        {
+            stringToTokenize = token.substring( commaIndex );
+            token = token.substring( 0, commaIndex );
         }
         else if ( -1 != rParenIndex )
         {
