@@ -17,46 +17,17 @@ global class Tokenizer
         String token = stringToTokenize;
         stringToTokenize = '';
 
-        Integer lParenIndex = token.indexOf('(');
-        Integer rParenIndex = token.indexOf(')');
-        Integer commaIndex = token.indexOf(',');
-
         Integer firstIndex = token.indexOfAny('(),');
 
-        if ( -1 == firstIndex )
-        {
-            return token;
-        }
-
-        if ( 0 == lParenIndex )
+        if ( 0 == firstIndex )
         {
             stringToTokenize = token.substring(1);
-            token = '(';
+            token = token.substring(0, 1);
         }
-        else if ( 0 == rParenIndex )
+        else if ( -1 != firstIndex )
         {
-            stringToTokenize = token.substring(1);
-            token = ')';
-        }
-        else if ( 0 == commaIndex )
-        {
-            stringToTokenize = token.substring(1);
-            token = ',';
-        }
-        else if ( firstIndex == lParenIndex )
-        {
-            stringToTokenize = token.substring( lParenIndex );
-            token = token.substring( 0, lParenIndex );
-        }
-        else if ( firstIndex == commaIndex )
-        {
-            stringToTokenize = token.substring( commaIndex );
-            token = token.substring( 0, commaIndex );
-        }
-        else if ( firstIndex == rParenIndex )
-        {
-            stringToTokenize = token.substring( rParenIndex );
-            token = token.substring( 0, rParenIndex );
+            stringToTokenize = token.substring( firstIndex );
+            token = token.substring( 0, firstIndex );
         }
 
         return token;
