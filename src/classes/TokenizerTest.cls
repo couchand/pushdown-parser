@@ -3,89 +3,61 @@ global class TokenizerTest
 {
     private static testMethod void testEmptyString()
     {
-        Test.startTest();
-
-            Tokenizer testTokenizer = new Tokenizer('');
-
-        Test.stopTest();
-
-        System.assert( testTokenizer.isDone(),
-            'Empty strings should tokenize into no input' );
+        assertTokenizes(
+            '',
+            new List<String>{}
+        );
     }
 
     private static testMethod void testIdentifier()
     {
-        Test.startTest();
-
-            Tokenizer testTokenizer = new Tokenizer('Foobar');
-
-        Test.stopTest();
-
-        System.assertEquals( 'Foobar', testTokenizer.getToken(),
-            'Identifiers should be tokenized whole' );
-        System.assert( testTokenizer.isDone(),
-            'Successfully tokenized identifiers should be removed from the input' );
+        assertTokenizes(
+            'foobar',
+            new List<String>{ 'foobar' }
+        );
     }
 
     private static testMethod void testFunctionCall()
     {
-        Test.startTest();
-
-            Tokenizer testTokenizer = new Tokenizer('baz()');
-
-        Test.stopTest();
-
-        System.assertEquals( 'baz', testTokenizer.getToken(),
-            'Function names should be tokenized whole' );
-        System.assertEquals( '(', testTokenizer.getToken(),
-            'Function call parens should be tokenized individually' );
-        System.assertEquals( ')', testTokenizer.getToken(),
-            'Function call parens should be tokenized individually' );
-        System.assert( testTokenizer.isDone(),
-            'Successfully tokenized identifiers should be removed from the input' );
+        assertTokenizes(
+            'foo()',
+            new List<String>{ 'foo', '(', ')' }
+        );
     }
 
     private static testMethod void testFunctionParameter()
     {
-        Test.startTest();
-
-            Tokenizer testTokenizer = new Tokenizer('foo(bar)');
-
-        Test.stopTest();
-
-        System.assertEquals( 'foo', testTokenizer.getToken(),
-            'Function names should be tokenized whole' );
-        System.assertEquals( '(', testTokenizer.getToken(),
-            'Function call parens should be tokenized individually' );
-        System.assertEquals( 'bar', testTokenizer.getToken(),
-            'Function params should be tokenized whole' );
-        System.assertEquals( ')', testTokenizer.getToken(),
-            'Function call parens should be tokenized individually' );
-        System.assert( testTokenizer.isDone(),
-            'Successfully tokenized identifiers should be removed from the input' );
+        assertTokenizes(
+            'foo(bar)',
+            new List<String>{ 'foo', '(', 'bar', ')' }
+        );
     }
 
     private static testMethod void testFunctionParameters()
     {
+        assertTokenizes(
+            'foo(bar,baz)',
+            new List<String>{ 'foo', '(', 'bar', ',', 'baz', ')' }
+        );
+    }
+
+    global static void assertTokenizes( String input, List<String> expectedTokens )
+    {
         Test.startTest();
 
-            Tokenizer testTokenizer = new Tokenizer('foo(bar,baz)');
+            Tokenizer testTokenizer = new Tokenizer( input );
 
         Test.stopTest();
 
-        System.assertEquals( 'foo', testTokenizer.getToken(),
-            'Function names should be tokenized whole' );
-        System.assertEquals( '(', testTokenizer.getToken(),
-            'Function call parens should be tokenized individually' );
-        System.assertEquals( 'bar', testTokenizer.getToken(),
-            'Function params should be tokenized whole' );
-        System.assertEquals( ',', testTokenizer.getToken(),
-            'Function params commas should be tokenized individually' );
-        System.assertEquals( 'baz', testTokenizer.getToken(),
-            'Function params should be tokenized whole' );
-        System.assertEquals( ')', testTokenizer.getToken(),
-            'Function call parens should be tokenized individually' );
+        for ( String expectedToken : expectedTokens )
+        {
+            System.assert( !testTokenizer.isDone(),
+                'Not enough tokens found' );
+            System.assertEquals( expectedToken, testTokenizer.getToken(),
+                'Wrong token found' );
+        }
+
         System.assert( testTokenizer.isDone(),
-            'Successfully tokenized identifiers should be removed from the input' );
+            'Too many tokens found' );
     }
 }
