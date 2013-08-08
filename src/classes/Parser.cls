@@ -13,7 +13,49 @@ global class Parser
     {
         while( !input.isDone() )
         {
-            stack.push( input.getToken() );
+            String token = input.getToken();
+
+            if ( token == ')' )
+            {
+                List<Object> params = new List<Object>();
+                String function;
+                Object param;
+
+                while ( !stack.isEmpty() )
+                {
+                    param = stack.pop();
+
+                    if ( param == '(' )
+                    {
+                        break;
+                    }
+                    if ( param == ',' )
+                    {
+                        continue;
+                    }
+                    if ( stack.peek() != '(' && stack.peek() != ',' )
+                    {
+                        throw new SyntaxException('Too much input found (missing comma? missing paren? extra space?)');
+                    }
+
+                    if ( params.isEmpty() )
+                    {
+                        params.add( param );
+                    }
+                    else
+                    {
+                        params.add( 0, param );
+                    }
+                }
+
+                function = (String)stack.pop();
+
+                stack.push( new FunctionCall( function, params ) );
+            }
+            else
+            {
+                stack.push( token );
+            }
         }
 
         if ( stack.isEmpty() )
