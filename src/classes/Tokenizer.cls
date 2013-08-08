@@ -1,4 +1,4 @@
-global class Tokenizer
+global class Tokenizer implements TokenStream
 {
     @TestVisible String stringToTokenize;
 
