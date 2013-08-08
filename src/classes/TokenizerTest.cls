@@ -41,6 +41,38 @@ global class TokenizerTest
         );
     }
 
+    private static testMethod void testNestedFunctionCall()
+    {
+        assertTokenizes(
+            'foo(bar())',
+            new List<String>{ 'foo', '(', 'bar', '(', ')', ')' }
+        );
+    }
+
+    private static testMethod void testNestedFunctionParameters()
+    {
+        assertTokenizes(
+            'foo(bar(baz,boom))',
+            new List<String>{ 'foo', '(', 'bar', '(', 'baz', ',', 'boom', ')', ')' }
+        );
+    }
+
+    private static testMethod void testNestedFunctionCalls()
+    {
+        assertTokenizes(
+            'foo(bar(),baz())',
+            new List<String>{ 'foo', '(', 'bar', '(', ')', ',', 'baz', '(', ')', ')' }
+        );
+    }
+
+    private static testMethod void testMultipleNestedFunctionParameters()
+    {
+        assertTokenizes(
+            'foo(bar(a,b),baz(c,d))',
+            new List<String>{ 'foo', '(', 'bar', '(', 'a', ',', 'b', ')', ',', 'baz', '(', 'c', ',', 'd', ')', ')' }
+        );
+    }
+
     global static void assertTokenizes( String input, List<String> expectedTokens )
     {
         Test.startTest();
