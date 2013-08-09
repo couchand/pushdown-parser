@@ -14,7 +14,7 @@ global class Tokenizer implements TokenStream
 
     global String getToken()
     {
-        String token = stringToTokenize;
+        String token = stringToTokenize.trim();
         stringToTokenize = '';
 
         Integer firstIndex = token.indexOfAny('(),');
@@ -30,6 +30,6 @@ global class Tokenizer implements TokenStream
             token = token.substring( 0, firstIndex );
         }
 
-        return token;
+        return token.trim();
     }
 }

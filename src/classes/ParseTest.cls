@@ -3,7 +3,7 @@ global class ParseTest
 {
     private static testMethod void testFlow()
     {
-        String input = 'foo(bar(a,b),baz(c,d))';
+        String input = 'foo( bar( a, b ), baz( c, d ) )';
 
         Test.startTest();
 

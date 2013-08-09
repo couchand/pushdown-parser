@@ -73,6 +73,14 @@ global class TokenizerTest
         );
     }
 
+    private static testMethod void testIgnoreSpace()
+    {
+        assertTokenizes(
+            ' foo (\n\tbar  (  a ,  b  )  ,\n\tbaz ( c ,  d )\n)  ',
+            new List<String>{ 'foo', '(', 'bar', '(', 'a', ',', 'b', ')', ',', 'baz', '(', 'c', ',', 'd', ')', ')' }
+        );
+    }
+
     global static void assertTokenizes( String input, List<String> expectedTokens )
     {
         Test.startTest();
